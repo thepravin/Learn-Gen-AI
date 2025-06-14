@@ -162,11 +162,15 @@ while True :
         "llm_result": None
         }
 
-    response = graph.invoke(_state)
-    # print(json.dumps(response, indent=2))
+    # response = graph.invoke(_state)
+    # # print(json.dumps(response, indent=2))
 
+    # print(" 🤖 > ",response["llm_result"])
 
-    print(" 🤖 > ",response["llm_result"])
+    for event in graph.stream(_state):
+       print(" 🧠 Event : ", event)
+
+    # print(graph.stream(_state))
 
     user = input("\n 👨 > ")
 

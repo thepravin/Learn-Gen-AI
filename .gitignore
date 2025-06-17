@@ -2,3 +2,5 @@ venv
 tempCodeRunnerFile.py
 *.pdf
 .env
+__pycache__
+*.pyc

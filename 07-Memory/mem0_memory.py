@@ -33,7 +33,16 @@ config = {
             # Make sure Qdrant collection is configured for 768 dimensions
             "embedding_model_dims": 768
         }
-    }
+    },
+     "graph_store": {
+        "provider": "neo4j",
+        "config": {
+            "url": "bolt://localhost:7687",
+            "username": "neo4j",
+            "password": "reform-william-center-vibrate-press-5829"
+        }
+    },
+
 }
 
 mem_client = Memory.from_config(config)

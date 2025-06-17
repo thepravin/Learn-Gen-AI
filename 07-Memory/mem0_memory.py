@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 import google.generativeai as genai
 from mem0 import Memory
@@ -37,20 +38,34 @@ config = {
 
 mem_client = Memory.from_config(config)
 
+
+
 def chat():
     while True:
         user_query = input(" 👨 > ")
+        relevant_memories = mem_client.search(query=user_query,user_id="pravin007")
         
         if user_query.lower() in ['quit', 'exit', 'bye','q']:
             print("👋 Goodbye!")
             break
 
+        memories = [f"ID: {mem.get("id")} Memory: {mem.get("memory")}" for mem in relevant_memories.get("results")]
+
+        SYSTEM_PROMPT = f"""
+             You are an memeory aware assistant which responds to user with context.
+            You are given with past memories and facts about the user.
+            
+            Memory of the user:
+            {json.dumps(memories)}
+
+            """
+
         try:
-            model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+            model = genai.GenerativeModel(model_name="gemini-2.0-flash",system_instruction=SYSTEM_PROMPT)
             chat = model.start_chat()    
             response = chat.send_message(user_query)
 
-            print("🤖 : ", response.text)
+            print(" 🤖 : ", response.text)
 
             # Add conversation to memory
             mem_client.add([
